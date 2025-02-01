@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PlumpingCareSystem.Entity.WebApplication.ViewModels.AboutVM;
 
 namespace PlumpingCareSystem.Entity.WebApplication.ViewModels.SocialMedia
 {
-	internal class SocialMediaAddVM
+	public class SocialMediaAddVM
 	{
+		public string? Twitter { get; set; }
+		public string? LinkedIn { get; set; }
+		public string? FaceBook { get; set; }
+		public string? Instagram { get; set; }
+
+		public AboutAddVM About { get; set; } = null!;
 	}
 }

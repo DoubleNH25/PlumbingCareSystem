@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace PlumpingCareSystem.Entity.WebApplication.ViewModels.HomePage
 {
-	internal class HomePageListVM
+	public class HomePageListVM
 	{
+		public int Id { get; set; }
+		public string CreatedDate { get; set; } = null!;
+		public string? UpdatedDate { get; set; }
+
+		public string Header { get; set; } = null!;
+		public string VideoLink { get; set; } = null!;
 	}
 }
