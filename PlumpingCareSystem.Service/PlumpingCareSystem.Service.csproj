@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PlumpingCareSystem.Repository\PlumpingCareSystem.Repository.csproj" />
+  </ItemGroup>
+
 </Project>
