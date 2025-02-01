@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="WebApplication\ViewModels\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\PlumpingCareSystem.Core\PlumpingCareSystem.Core.csproj" />
   </ItemGroup>
 

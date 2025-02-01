@@ -10,4 +10,20 @@
     <ProjectReference Include="..\PlumpingCareSystem.Repository\PlumpingCareSystem.Repository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Automapper\Identity\" />
+    <Folder Include="FluentValidation\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Exception\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Filters\" />
+    <Folder Include="Middlewares\" />
+    <Folder Include="Messages\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+  </ItemGroup>
+
 </Project>
