@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Configuration\" />
+    <Folder Include="Configuration\Identity\" />
     <Folder Include="Extensions\" />
     <Folder Include="UnitOfWork\" />
     <Folder Include="Repositories\" />
