@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using PlumpingCareSystem.Entity.WebApplication.Entities;
+using PlumpingCareSystem.Entity.WebApplication.ViewModels.Service;
 
 namespace PlumpingCareSystem.Service.Automapper.WebApplication
 {
-	internal class ServiceMapper
+	public class ServiceMapper : Profile
 	{
+		public ServiceMapper()
+		{
+			CreateMap<Services, ServiceListVM>().ReverseMap();
+			CreateMap<Services, ServiceAddVM>().ReverseMap();
+			CreateMap<Services, ServiceUpdateVM>().ReverseMap();
+		}
 	}
 }

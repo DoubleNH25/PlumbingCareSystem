@@ -4,7 +4,7 @@ using PlumpingCareSystem.Core.BaseEntity;
 
 namespace PlumpingCareSystem.Entity.WebApplication.Entities
 {
-	public class Service : BaseEntity
+	public class Services : BaseEntity
 	{
 		public string Name { get; set; } = null!;
 		public string Description { get; set; } = null!;

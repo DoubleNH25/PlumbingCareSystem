@@ -346,7 +346,7 @@ namespace PlumpingCareSystem.Repository.Migrations
                         });
                 });
 
-            modelBuilder.Entity("PlumpingCareSystem.Entity.WebApplication.Entities.Service", b =>
+            modelBuilder.Entity("PlumpingCareSystem.Entity.WebApplication.Entities.Services", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

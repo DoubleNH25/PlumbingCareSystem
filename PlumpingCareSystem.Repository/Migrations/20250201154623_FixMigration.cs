@@ -7,7 +7,7 @@
 namespace PlumpingCareSystem.Repository.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstTest : Migration
+    public partial class FixMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

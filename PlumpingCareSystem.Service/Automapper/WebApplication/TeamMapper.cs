@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using PlumpingCareSystem.Entity.WebApplication.Entities;
+using PlumpingCareSystem.Entity.WebApplication.ViewModels.Team;
 
 namespace PlumpingCareSystem.Service.Automapper.WebApplication
 {
-	internal class TeamMapper
+	public class TeamMapper : Profile
 	{
+		public TeamMapper()
+		{
+			CreateMap<Team, TeamListVM>().ReverseMap();
+			CreateMap<Team, TeamAddVM>().ReverseMap();
+			CreateMap<Team, TeamUpdateVM>().ReverseMap();
+		}
 	}
 }

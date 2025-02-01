@@ -6,9 +6,9 @@ using PlumpingCareSystem.Entity.WebApplication.Entities;
 
 namespace PlumpingCareSystem.Repository.Configuration.WebApplication
 {
-	public class ServiceConfig : IEntityTypeConfiguration<Service>
+	public class ServiceConfig : IEntityTypeConfiguration<Services>
 	{
-		public void Configure(EntityTypeBuilder<Service> builder)
+		public void Configure(EntityTypeBuilder<Services> builder)
 		{
 			builder.Property(x => x.CreatedDate).IsRequired().HasMaxLength(10);
 			builder.Property(x => x.UpdatedDate).HasMaxLength(10);
@@ -18,7 +18,7 @@ namespace PlumpingCareSystem.Repository.Configuration.WebApplication
 			builder.Property(x => x.Description).IsRequired().HasMaxLength(2000);
 			builder.Property(x => x.Icon).IsRequired().HasMaxLength(100);
 
-			builder.HasData(new Service
+			builder.HasData(new Services
 			{
 				Id = 1,
 				CreatedDate = "05/05/2025",
@@ -26,7 +26,7 @@ namespace PlumpingCareSystem.Repository.Configuration.WebApplication
 				Name = "Plumbing Service 1",
 				Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In nibh mauris cursus mattis molestie a iaculis at erat. Odio ut enim blandit volutpat maecenas volutpat blandit aliquam etiam."
 
-			}, new Service
+			}, new Services
 			{
 				Id = 2,
 				CreatedDate = "05/05/2025",
@@ -34,7 +34,7 @@ namespace PlumpingCareSystem.Repository.Configuration.WebApplication
 				Name = "Plumbing Service 2",
 				Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In nibh mauris cursus mattis molestie a iaculis at erat. Odio ut enim blandit volutpat maecenas volutpat blandit aliquam etiam."
 
-			}, new Service
+			}, new Services
 			{
 				Id = 3,
 				CreatedDate = "05/05/2025",

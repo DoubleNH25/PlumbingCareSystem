@@ -11,8 +11,8 @@ using PlumpingCareSystem.Repository.Context;
 namespace PlumpingCareSystem.Repository.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250201075156_FirstTest")]
-    partial class FirstTest
+    [Migration("20250201154623_FixMigration")]
+    partial class FixMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -349,7 +349,7 @@ namespace PlumpingCareSystem.Repository.Migrations
                         });
                 });
 
-            modelBuilder.Entity("PlumpingCareSystem.Entity.WebApplication.Entities.Service", b =>
+            modelBuilder.Entity("PlumpingCareSystem.Entity.WebApplication.Entities.Services", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

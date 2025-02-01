@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using PlumpingCareSystem.Entity.WebApplication.Entities;
+using PlumpingCareSystem.Entity.WebApplication.ViewModels.HomePage;
 
 namespace PlumpingCareSystem.Service.Automapper.WebApplication
 {
-	internal class HomePageMapper
+	public class HomePageMapper : Profile
 	{
+		public HomePageMapper()
+		{
+			CreateMap<HomePage, HomePageListVM>().ReverseMap();
+			CreateMap<HomePage, HomePageAddVM>().ReverseMap();
+			CreateMap<HomePage, HomePageUpdateVM>().ReverseMap();
+		}
 	}
 }

@@ -21,7 +21,7 @@ namespace PlumpingCareSystem.Repository.Context
 		public DbSet<Contact> Contacts { get; set; }
 		public DbSet<HomePage> HomePages { get; set; }
 		public DbSet<Portfolio> Portfolios { get; set; }
-		public DbSet<Service> Services { get; set; }
+		public DbSet<Services> Services { get; set; }
 		public DbSet<SocialMedia> SocialMedias { get; set; }
 		public DbSet<Team> Teams { get; set; }
 		public DbSet<Testimonal> Testimonals { get; set; }

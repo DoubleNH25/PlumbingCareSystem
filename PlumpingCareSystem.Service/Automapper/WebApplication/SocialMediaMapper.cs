@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using PlumpingCareSystem.Entity.WebApplication.Entities;
+using PlumpingCareSystem.Entity.WebApplication.ViewModels.SocialMedia;
 
 namespace PlumpingCareSystem.Service.Automapper.WebApplication
 {
-	internal class SocialMediaMapper
+	public class SocialMediaMapper : Profile
 	{
+		public SocialMediaMapper()
+		{
+			CreateMap<SocialMedia, SocialMediaListVM>().ReverseMap();
+			CreateMap<SocialMedia, SocialMediaAddVM>().ReverseMap();
+			CreateMap<SocialMedia, SocialMediaUpdateVM>().ReverseMap();
+		}
 	}
 }

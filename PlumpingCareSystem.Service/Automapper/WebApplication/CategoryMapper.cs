@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using PlumpingCareSystem.Entity.WebApplication.Entities;
+using PlumpingCareSystem.Entity.WebApplication.ViewModels.Category;
+
 
 namespace PlumpingCareSystem.Service.Automapper.WebApplication
 {
-	internal class CategoryMapper
+	public class CategoryMapper : Profile
 	{
+		public CategoryMapper()
+		{
+			CreateMap<Category, CategoryListVM>().ReverseMap();
+			CreateMap<Category, CategoryAddVM>().ReverseMap();
+			CreateMap<Category, CategoryUpdateVM>().ReverseMap();
+		}
 	}
 }
