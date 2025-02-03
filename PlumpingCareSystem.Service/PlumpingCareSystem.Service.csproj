@@ -13,7 +13,6 @@
   <ItemGroup>
     <Folder Include="Automapper\Identity\" />
     <Folder Include="FluentValidation\" />
-    <Folder Include="Extensions\" />
     <Folder Include="Exception\" />
     <Folder Include="Helpers\" />
     <Folder Include="Filters\" />
