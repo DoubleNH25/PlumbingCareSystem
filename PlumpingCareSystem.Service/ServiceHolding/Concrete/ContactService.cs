@@ -1,33 +1,52 @@
-﻿using PlumpingCareSystem.Entity.WebApplication.ViewModels.Contact;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
+using PlumpingCareSystem.Entity.WebApplication.Entities;
+using PlumpingCareSystem.Entity.WebApplication.ViewModels.Contact;
+using PlumpingCareSystem.Repository.Repositories.Abstract;
+using PlumpingCareSystem.Repository.UnitOfWorks.Abstract;
 using PlumpingCareSystem.Service.ServiceHolding.Abstract;
 
 namespace PlumpingCareSystem.Service.ServiceHolding.Concrete
 {
 	public class ContactService : IContactService
 	{
-		public Task AddContactAsync(ContactAddVM request)
+		private readonly IUnitOfWork _unitOfWork;
+		private readonly IMapper _mapper;
+		private readonly IGenericRepositories<Contact> _repository;
+		public ContactService(IUnitOfWork unitOfWork, IMapper mapper)
 		{
-			throw new NotImplementedException();
+			_unitOfWork = unitOfWork;
+			_mapper = mapper;
+			_repository = _unitOfWork.GetGenericRepository<Contact>();
 		}
-
-		public Task DeleteContactAsync(int id)
+		public async Task<List<ContactListVM>> GetAllListAsync()
 		{
-			throw new NotImplementedException();
+			var contactListVM = await _repository.GetAlltEntityList().ProjectTo<ContactListVM>(_mapper.ConfigurationProvider).ToListAsync();
+			return contactListVM;
 		}
-
-		public Task<List<ContactListVM>> GetAllListAsync()
+		public async Task AddContactAsync(ContactAddVM request)
 		{
-			throw new NotImplementedException();
+			var contact = _mapper.Map<Contact>(request);
+			await _repository.AddEntityAsync(contact);
+			await _unitOfWork.CommitAsync();
 		}
-
-		public Task<ContactUpdateVM> GetContactById(int id)
+		public async Task DeleteContactAsync(int id)
 		{
-			throw new NotImplementedException();
+			var contact = await _repository.GetEntityByIdAsync(id);
+			_repository.DeletetEntity(contact);
+			await _unitOfWork.CommitAsync();
 		}
-
-		public Task UpdateContactAsync(ContactUpdateVM request)
+		public async Task<ContactUpdateVM> GetContactById(int id)
 		{
-			throw new NotImplementedException();
+			var contact = await _repository.Where(x => x.Id == id).ProjectTo<ContactUpdateVM>(_mapper.ConfigurationProvider).SingleAsync();
+			return contact;
+		}
+		public async Task UpdateContactAsync(ContactUpdateVM request)
+		{
+			var contact = _mapper.Map<Contact>(request);
+			_repository.UpdatetEntity(contact);
+			await _unitOfWork.CommitAsync();
 		}
 	}
 }

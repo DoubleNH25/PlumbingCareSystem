@@ -1,35 +1,54 @@
 ﻿
 
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
+using PlumpingCareSystem.Entity.WebApplication.Entities;
 using PlumpingCareSystem.Entity.WebApplication.ViewModels.Category;
+using PlumpingCareSystem.Repository.Repositories.Abstract;
+using PlumpingCareSystem.Repository.UnitOfWorks.Abstract;
 using PlumpingCareSystem.Service.ServiceHolding.Abstract;
 
 namespace PlumpingCareSystem.Service.ServiceHolding.Concrete
 {
 	public class CategoryService : ICategoryService
 	{
-		public Task AddCategoryAsync(CategoryAddVM request)
+		private readonly IUnitOfWork _unitOfWork;
+		private readonly IMapper _mapper;
+		private readonly IGenericRepositories<Category> _repository;
+		public CategoryService(IUnitOfWork unitOfWork, IMapper mapper)
 		{
-			throw new NotImplementedException();
+			_unitOfWork = unitOfWork;
+			_mapper = mapper;
+			_repository = _unitOfWork.GetGenericRepository<Category>();
 		}
-
-		public Task DeleteCategoryAsync(int id)
+		public async Task<List<CategoryListVM>> GetAllListAsync()
 		{
-			throw new NotImplementedException();
+			var categoryListVM = await _repository.GetAlltEntityList().ProjectTo<CategoryListVM>(_mapper.ConfigurationProvider).ToListAsync();
+			return categoryListVM;
 		}
-
-		public Task<List<CategoryListVM>> GetAllListAsync()
+		public async Task AddCategoryAsync(CategoryAddVM request)
 		{
-			throw new NotImplementedException();
+			var category = _mapper.Map<Category>(request);
+			await _repository.AddEntityAsync(category);
+			await _unitOfWork.CommitAsync();
 		}
-
-		public Task<CategoryUpdateVM> GetCategoryById(int id)
+		public async Task DeleteCategoryAsync(int id)
 		{
-			throw new NotImplementedException();
+			var category = await _repository.GetEntityByIdAsync(id);
+			_repository.DeletetEntity(category);
+			await _unitOfWork.CommitAsync();
 		}
-
-		public Task UpdateCategoryAsync(CategoryUpdateVM request)
+		public async Task<CategoryUpdateVM> GetCategoryById(int id)
 		{
-			throw new NotImplementedException();
+			var category = await _repository.Where(x => x.Id == id).ProjectTo<CategoryUpdateVM>(_mapper.ConfigurationProvider).SingleAsync();
+			return category;
+		}
+		public async Task UpdateCategoryAsync(CategoryUpdateVM request)
+		{
+			var category = _mapper.Map<Category>(request);
+			_repository.UpdatetEntity(category);
+			await _unitOfWork.CommitAsync();
 		}
 	}
 }

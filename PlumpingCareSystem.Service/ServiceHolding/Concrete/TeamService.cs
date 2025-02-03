@@ -1,35 +1,54 @@
 ﻿
 
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
+using PlumpingCareSystem.Entity.WebApplication.Entities;
 using PlumpingCareSystem.Entity.WebApplication.ViewModels.Team;
+using PlumpingCareSystem.Repository.Repositories.Abstract;
+using PlumpingCareSystem.Repository.UnitOfWorks.Abstract;
 using PlumpingCareSystem.Service.ServiceHolding.Abstract;
 
 namespace PlumpingCareSystem.Service.ServiceHolding.Concrete
 {
 	public class TeamService : ITeamService
 	{
-		public Task AddTeamAsync(TeamAddVM request)
+		private readonly IUnitOfWork _unitOfWork;
+		private readonly IMapper _mapper;
+		private readonly IGenericRepositories<Team> _repository;
+		public TeamService(IUnitOfWork unitOfWork, IMapper mapper)
 		{
-			throw new NotImplementedException();
+			_unitOfWork = unitOfWork;
+			_mapper = mapper;
+			_repository = _unitOfWork.GetGenericRepository<Team>();
 		}
-
-		public Task DeleteTeamAsync(int id)
+		public async Task<List<TeamListVM>> GetAllListAsync()
 		{
-			throw new NotImplementedException();
+			var teamListVM = await _repository.GetAlltEntityList().ProjectTo<TeamListVM>(_mapper.ConfigurationProvider).ToListAsync();
+			return teamListVM;
 		}
-
-		public Task<List<TeamListVM>> GetAllListAsync()
+		public async Task AddTeamAsync(TeamAddVM request)
 		{
-			throw new NotImplementedException();
+			var team = _mapper.Map<Team>(request);
+			await _repository.AddEntityAsync(team);
+			await _unitOfWork.CommitAsync();
 		}
-
-		public Task<TeamUpdateVM> GetTeamById(int id)
+		public async Task DeleteTeamAsync(int id)
 		{
-			throw new NotImplementedException();
+			var team = await _repository.GetEntityByIdAsync(id);
+			_repository.DeletetEntity(team);
+			await _unitOfWork.CommitAsync();
 		}
-
-		public Task UpdateTeamAsync(TeamUpdateVM request)
+		public async Task<TeamUpdateVM> GetTeamById(int id)
 		{
-			throw new NotImplementedException();
+			var team = await _repository.Where(x => x.Id == id).ProjectTo<TeamUpdateVM>(_mapper.ConfigurationProvider).SingleAsync();
+			return team;
+		}
+		public async Task UpdateTeamAsync(TeamUpdateVM request)
+		{
+			var team = _mapper.Map<Team>(request);
+			_repository.UpdatetEntity(team);
+			await _unitOfWork.CommitAsync();
 		}
 	}
 }

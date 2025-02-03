@@ -1,33 +1,52 @@
-﻿using PlumpingCareSystem.Entity.WebApplication.ViewModels.HomePage;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
+using PlumpingCareSystem.Entity.WebApplication.Entities;
+using PlumpingCareSystem.Entity.WebApplication.ViewModels.HomePage;
+using PlumpingCareSystem.Repository.Repositories.Abstract;
+using PlumpingCareSystem.Repository.UnitOfWorks.Abstract;
 using PlumpingCareSystem.Service.ServiceHolding.Abstract;
 
 namespace PlumpingCareSystem.Service.ServiceHolding.Concrete
 {
 	public class HomePageService : IHomePageService
 	{
-		public Task AddHomePageAsync(HomePageAddVM request)
+		private readonly IUnitOfWork _unitOfWork;
+		private readonly IMapper _mapper;
+		private readonly IGenericRepositories<HomePage> _repository;
+		public HomePageService(IUnitOfWork unitOfWork, IMapper mapper)
 		{
-			throw new NotImplementedException();
+			_unitOfWork = unitOfWork;
+			_mapper = mapper;
+			_repository = _unitOfWork.GetGenericRepository<HomePage>();
 		}
-
-		public Task DeleteHomePageAsync(int id)
+		public async Task<List<HomePageListVM>> GetAllListAsync()
 		{
-			throw new NotImplementedException();
+			var homePageListVM = await _repository.GetAlltEntityList().ProjectTo<HomePageListVM>(_mapper.ConfigurationProvider).ToListAsync();
+			return homePageListVM;
 		}
-
-		public Task<List<HomePageListVM>> GetAllListAsync()
+		public async Task AddHomePageAsync(HomePageAddVM request)
 		{
-			throw new NotImplementedException();
+			var homePage = _mapper.Map<HomePage>(request);
+			await _repository.AddEntityAsync(homePage);
+			await _unitOfWork.CommitAsync();
 		}
-
-		public Task<HomePageUpdateVM> GetHomePageById(int id)
+		public async Task DeleteHomePageAsync(int id)
 		{
-			throw new NotImplementedException();
+			var homePage = await _repository.GetEntityByIdAsync(id);
+			_repository.DeletetEntity(homePage);
+			await _unitOfWork.CommitAsync();
 		}
-
-		public Task UpdateHomePageAsync(HomePageUpdateVM request)
+		public async Task<HomePageUpdateVM> GetHomePageById(int id)
 		{
-			throw new NotImplementedException();
+			var homePage = await _repository.Where(x => x.Id == id).ProjectTo<HomePageUpdateVM>(_mapper.ConfigurationProvider).SingleAsync();
+			return homePage;
+		}
+		public async Task UpdateHomePageAsync(HomePageUpdateVM request)
+		{
+			var homePage = _mapper.Map<HomePage>(request);
+			_repository.UpdatetEntity(homePage);
+			await _unitOfWork.CommitAsync();
 		}
 	}
 }
