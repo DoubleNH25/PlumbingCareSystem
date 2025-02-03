@@ -18,7 +18,6 @@
     <Folder Include="Filters\" />
     <Folder Include="Middlewares\" />
     <Folder Include="Messages\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
