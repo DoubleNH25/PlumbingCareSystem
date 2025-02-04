@@ -1,3 +1,4 @@
 ﻿Sửa và xem xét ViewImports.cshtml
 Xem lại các gọi import của nó và errorVM
 Check HomeController
+Xem Xét một số VM còn dùng datetime.now

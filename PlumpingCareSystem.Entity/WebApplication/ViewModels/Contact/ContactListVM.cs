@@ -4,7 +4,7 @@ namespace PlumpingCareSystem.Entity.WebApplication.ViewModels.Contact
 	public class ContactListVM
 	{
 		public int Id { get; set; }
-		public string CreatedDate { get; set; } = null!;
+		public string CreatedDate { get; set; } = DateTime.Now.ToString("d");
 		public string? UpdatedDate { get; set; }
 
 		public string Location { get; set; } = null!;
