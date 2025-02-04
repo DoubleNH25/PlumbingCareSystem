@@ -4,6 +4,7 @@ using PlumpingCareSystem.Service.ServiceHolding.Abstract;
 
 namespace PlumpingCareSystem.Areas.Admin.Controllers
 {
+	[Area("Admin")]
 	public class AboutController : Controller
 	{
 		private readonly IAboutService _aboutService;
@@ -16,7 +17,7 @@ namespace PlumpingCareSystem.Areas.Admin.Controllers
 		public async Task<IActionResult> GetAboutList()
 		{
 			var aboutList = await _aboutService.GetAllListAsync();
-			return View();
+			return View(aboutList);
 		}
 
 		[HttpGet]
