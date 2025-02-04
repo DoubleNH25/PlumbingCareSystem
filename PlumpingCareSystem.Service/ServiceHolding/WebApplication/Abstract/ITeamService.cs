@@ -1,8 +1,6 @@
-﻿
+﻿using PlumpingCareSystem.Entity.WebApplication.ViewModels.Team;
 
-using PlumpingCareSystem.Entity.WebApplication.ViewModels.Team;
-
-namespace PlumpingCareSystem.Service.ServiceHolding.Abstract
+namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract
 {
 	public interface ITeamService
 	{

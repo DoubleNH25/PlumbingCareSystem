@@ -1,8 +1,6 @@
-﻿
+﻿using PlumpingCareSystem.Entity.WebApplication.ViewModels.AboutVM;
 
-using PlumpingCareSystem.Entity.WebApplication.ViewModels.AboutVM;
-
-namespace PlumpingCareSystem.Service.ServiceHolding.Abstract
+namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract
 {
 	public interface IAboutService
 	{

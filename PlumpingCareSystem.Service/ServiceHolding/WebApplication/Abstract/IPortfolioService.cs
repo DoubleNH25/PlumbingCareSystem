@@ -1,7 +1,6 @@
-﻿
-using PlumpingCareSystem.Entity.WebApplication.ViewModels.Portfolio;
+﻿using PlumpingCareSystem.Entity.WebApplication.ViewModels.Portfolio;
 
-namespace PlumpingCareSystem.Service.ServiceHolding.Abstract
+namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract
 {
 	public interface IPortfolioService
 	{

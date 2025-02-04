@@ -1,8 +1,6 @@
-﻿
+﻿using PlumpingCareSystem.Entity.WebApplication.ViewModels.Contact;
 
-using PlumpingCareSystem.Entity.WebApplication.ViewModels.Contact;
-
-namespace PlumpingCareSystem.Service.ServiceHolding.Abstract
+namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract
 {
 	public interface IContactService
 	{

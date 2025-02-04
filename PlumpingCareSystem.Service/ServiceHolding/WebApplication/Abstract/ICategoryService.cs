@@ -1,7 +1,6 @@
-﻿
-using PlumpingCareSystem.Entity.WebApplication.ViewModels.Category;
+﻿using PlumpingCareSystem.Entity.WebApplication.ViewModels.Category;
 
-namespace PlumpingCareSystem.Service.ServiceHolding.Abstract
+namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract
 {
 	public interface ICategoryService
 	{

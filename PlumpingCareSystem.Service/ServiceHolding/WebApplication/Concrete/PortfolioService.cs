@@ -5,9 +5,9 @@ using PlumpingCareSystem.Entity.WebApplication.Entities;
 using PlumpingCareSystem.Entity.WebApplication.ViewModels.Portfolio;
 using PlumpingCareSystem.Repository.Repositories.Abstract;
 using PlumpingCareSystem.Repository.UnitOfWorks.Abstract;
-using PlumpingCareSystem.Service.ServiceHolding.Abstract;
+using PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract;
 
-namespace PlumpingCareSystem.Service.ServiceHolding.Concrete
+namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 {
 	public class PortfolioService : IPortfolioService
 	{

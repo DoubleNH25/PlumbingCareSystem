@@ -1,7 +1,6 @@
-﻿
-using PlumpingCareSystem.Entity.WebApplication.ViewModels.Service;
+﻿using PlumpingCareSystem.Entity.WebApplication.ViewModels.Service;
 
-namespace PlumpingCareSystem.Service.ServiceHolding.Abstract
+namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract
 {
 	public interface IServiceService
 	{

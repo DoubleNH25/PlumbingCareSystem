@@ -1,8 +1,6 @@
-﻿
+﻿using PlumpingCareSystem.Entity.WebApplication.ViewModels.Testimonal;
 
-using PlumpingCareSystem.Entity.WebApplication.ViewModels.Testimonal;
-
-namespace PlumpingCareSystem.Service.ServiceHolding.Abstract
+namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract
 {
 	public interface ITestimonalService
 	{

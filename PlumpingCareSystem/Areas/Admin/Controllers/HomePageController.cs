@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PlumpingCareSystem.Entity.WebApplication.ViewModels.HomePage;
-using PlumpingCareSystem.Service.ServiceHolding.Abstract;
+using PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract;
 
 namespace PlumpingCareSystem.Areas.Admin.Controllers
 {

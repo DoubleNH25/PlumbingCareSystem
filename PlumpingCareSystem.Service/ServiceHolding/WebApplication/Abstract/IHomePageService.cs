@@ -1,8 +1,6 @@
-﻿
+﻿using PlumpingCareSystem.Entity.WebApplication.ViewModels.HomePage;
 
-using PlumpingCareSystem.Entity.WebApplication.ViewModels.HomePage;
-
-namespace PlumpingCareSystem.Service.ServiceHolding.Abstract
+namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract
 {
 	public interface IHomePageService
 	{

@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PlumpingCareSystem.Entity.WebApplication.ViewModels.Contact;
-using PlumpingCareSystem.Service.ServiceHolding.Abstract;
+using PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract;
 
 namespace PlumpingCareSystem.Areas.Admin.Controllers
 {
-		[Area("Admin")]
+	[Area("Admin")]
 		public class ContactController : Controller
 		{
 			private readonly IContactService _contactService;
