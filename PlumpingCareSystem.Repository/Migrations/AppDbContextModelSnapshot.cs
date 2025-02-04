@@ -86,7 +86,7 @@ namespace PlumpingCareSystem.Repository.Migrations
                     b.HasIndex("SocialMediaId")
                         .IsUnique();
 
-                    b.ToTable("Abouts");
+                    b.ToTable("Abouts", (string)null);
 
                     b.HasData(
                         new
@@ -135,7 +135,7 @@ namespace PlumpingCareSystem.Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -196,7 +196,7 @@ namespace PlumpingCareSystem.Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Contacts");
+                    b.ToTable("Contacts", (string)null);
 
                     b.HasData(
                         new
@@ -249,7 +249,7 @@ namespace PlumpingCareSystem.Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("HomePages");
+                    b.ToTable("HomePages", (string)null);
 
                     b.HasData(
                         new
@@ -305,7 +305,7 @@ namespace PlumpingCareSystem.Repository.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Portfolios");
+                    b.ToTable("Portfolios", (string)null);
 
                     b.HasData(
                         new
@@ -386,7 +386,7 @@ namespace PlumpingCareSystem.Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Services");
+                    b.ToTable("Services", (string)null);
 
                     b.HasData(
                         new
@@ -452,7 +452,7 @@ namespace PlumpingCareSystem.Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SocialMedias");
+                    b.ToTable("SocialMedias", (string)null);
 
                     b.HasData(
                         new
@@ -519,7 +519,7 @@ namespace PlumpingCareSystem.Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teams");
+                    b.ToTable("Teams", (string)null);
 
                     b.HasData(
                         new
@@ -583,7 +583,7 @@ namespace PlumpingCareSystem.Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Testimonals");
+                    b.ToTable("Testimonals", (string)null);
 
                     b.HasData(
                         new
