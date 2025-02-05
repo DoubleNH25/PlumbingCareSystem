@@ -17,11 +17,11 @@ namespace PlumpingCareSystem.Service.FluentValidation.WebApplication.ContactVali
 			RuleFor(x => x.Email)
 			   .NotEmpty().WithMessage(ValidationMessages.NullEmptyMessage("Email"))
 			   .NotNull().WithMessage(ValidationMessages.NullEmptyMessage("Email"))
-			   .MaximumLength(100).WithMessage(ValidationMessages.MaximumCharachterAllowence("Location", 100));
+			   .MaximumLength(100).WithMessage(ValidationMessages.MaximumCharachterAllowence("Email", 100));
 			RuleFor(x => x.Call)
 			   .NotEmpty().WithMessage(ValidationMessages.NullEmptyMessage("Call"))
 			   .NotNull().WithMessage(ValidationMessages.NullEmptyMessage("Call"))
-			   .MaximumLength(17).WithMessage(ValidationMessages.MaximumCharachterAllowence("Location", 17));
+			   .MaximumLength(17).WithMessage(ValidationMessages.MaximumCharachterAllowence("Call", 17));
 			RuleFor(x => x.Map)
 			   .NotEmpty().WithMessage(ValidationMessages.NullEmptyMessage("Map"))
 			   .NotNull().WithMessage(ValidationMessages.NullEmptyMessage("Map"));
