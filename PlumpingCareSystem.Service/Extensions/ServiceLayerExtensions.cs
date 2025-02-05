@@ -3,6 +3,7 @@ using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using PlumpingCareSystem.Service.FluentValidation.WebApplication.HomePageValidation;
 using System.Reflection;
+using PlumpingCareSystem.Service.Extensions.Identity;
 
 namespace PlumpingCareSystem.Service.Extensions
 {
@@ -10,6 +11,8 @@ namespace PlumpingCareSystem.Service.Extensions
 	{
 		public static IServiceCollection LoadServiceLayerExtensions(this IServiceCollection services)
 		{
+			services.LoadIdentityExtensions();
+
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			
 			var types = Assembly.GetExecutingAssembly().GetTypes()

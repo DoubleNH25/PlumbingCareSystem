@@ -1,12 +1,14 @@
 ﻿
 
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using PlumpingCareSystem.Entity.Identity.Entities;
 using PlumpingCareSystem.Entity.WebApplication.Entities;
 using System.Reflection;
 
 namespace PlumpingCareSystem.Repository.Context
 {
-	public class AppDbContext : DbContext
+	public class AppDbContext : IdentityDbContext<AppUser, AppRole, string>
 	{
 		public AppDbContext(DbContextOptions options) : base(options)
 		{
