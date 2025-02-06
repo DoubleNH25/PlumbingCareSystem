@@ -15,8 +15,4 @@
     <ProjectReference Include="..\PlumpingCareSystem.Core\PlumpingCareSystem.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Identity\ViewModels\" />
-  </ItemGroup>
-
 </Project>
