@@ -1,18 +1,19 @@
 ﻿
-
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PlumpingCareSystem.Entity.Identity.Entities;
+using PlumpingCareSystem.Entity.Identity.ViewModels;
 using PlumpingCareSystem.Repository.Context;
+using PlumpingCareSystem.Service.Helpers.Identity.EmailHelper;
 
 namespace PlumpingCareSystem.Service.Extensions.Identity
 {
 	public static class IdentityExtensions
 	{
-		public static IServiceCollection LoadIdentityExtensions(this IServiceCollection services)
+		public static IServiceCollection LoadIdentityExtensions
+			(this IServiceCollection services, IConfiguration config)
 		{
 			services.AddIdentity<AppUser, AppRole>(opt =>
 			{
@@ -38,6 +39,15 @@ namespace PlumpingCareSystem.Service.Extensions.Identity
 				opt.Cookie = newCookie;
 				opt.ExpireTimeSpan = TimeSpan.FromMinutes(60);
 			});
+
+			services.Configure<DataProtectionTokenProviderOptions>(opt =>
+			{
+				opt.TokenLifespan = TimeSpan.FromMinutes(60);
+			});
+			services.AddScoped<IEmailSendMethod, EmailSendMethod>();
+
+			services.Configure<GmailInformationVM>(config.GetSection("EmailSettings"));
+
 			return services;
 		}
 	}

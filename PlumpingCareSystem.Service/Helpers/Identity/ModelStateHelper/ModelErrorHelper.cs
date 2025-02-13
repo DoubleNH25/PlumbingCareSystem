@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace PlumpingCareSystem.Service.Helpers.Identity
+namespace PlumpingCareSystem.Service.Helpers.Identity.ModelStateHelper
 {
 	public static class ModelErrorHelper
 	{

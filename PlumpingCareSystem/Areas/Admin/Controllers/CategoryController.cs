@@ -1,11 +1,13 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PlumpingCareSystem.Entity.WebApplication.ViewModels.Category;
 using PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract;
 
 namespace PlumpingCareSystem.Areas.Admin.Controllers
 {
+	[Authorize]
 	[Area("Admin")]
 	public class CategoryController : Controller
 	{

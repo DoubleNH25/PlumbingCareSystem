@@ -4,14 +4,16 @@ using Microsoft.Extensions.DependencyInjection;
 using PlumpingCareSystem.Service.FluentValidation.WebApplication.HomePageValidation;
 using System.Reflection;
 using PlumpingCareSystem.Service.Extensions.Identity;
+using Microsoft.Extensions.Configuration;
 
 namespace PlumpingCareSystem.Service.Extensions
 {
 	public static class ServiceLayerExtensions
 	{
-		public static IServiceCollection LoadServiceLayerExtensions(this IServiceCollection services)
+		public static IServiceCollection LoadServiceLayerExtensions
+			(this IServiceCollection services, IConfiguration config)
 		{
-			services.LoadIdentityExtensions();
+			services.LoadIdentityExtensions(config);
 
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			
