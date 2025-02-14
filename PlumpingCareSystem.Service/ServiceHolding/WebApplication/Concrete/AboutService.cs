@@ -6,6 +6,7 @@ using PlumpingCareSystem.Repository.Repositories.Abstract;
 using PlumpingCareSystem.Repository.UnitOfWorks.Abstract;
 using Microsoft.EntityFrameworkCore;
 using PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract;
+using PlumpingCareSystem.Service.Helpers.Generic.Image;
 
 
 namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
@@ -15,11 +16,13 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IMapper _mapper;
 		private readonly IGenericRepositories<About> _repository;
-		public AboutService(IUnitOfWork unitOfWork, IMapper mapper)
+		private readonly IImageHelper _imageHelper;
+		public AboutService(IUnitOfWork unitOfWork, IMapper mapper, IImageHelper imageHelper)
 		{
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
 			_repository = _unitOfWork.GetGenericRepository<About>();
+			_imageHelper = imageHelper;
 		}
 		public async Task<List<AboutListVM>> GetAllListAsync()
 		{

@@ -5,6 +5,7 @@ using PlumpingCareSystem.Service.FluentValidation.WebApplication.HomePageValidat
 using System.Reflection;
 using PlumpingCareSystem.Service.Extensions.Identity;
 using Microsoft.Extensions.Configuration;
+using PlumpingCareSystem.Service.Helpers.Generic.Image;
 
 namespace PlumpingCareSystem.Service.Extensions
 {
@@ -35,6 +36,8 @@ namespace PlumpingCareSystem.Service.Extensions
 			});
 
 			services.AddValidatorsFromAssemblyContaining<HomePageAddValidation>();
+
+			services.AddScoped<IImageHelper, ImageHelper>();
 
 			return services;
 		}

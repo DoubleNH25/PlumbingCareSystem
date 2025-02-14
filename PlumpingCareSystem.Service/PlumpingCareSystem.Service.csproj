@@ -16,7 +16,6 @@
     <Folder Include="Extensions\WebApplication\" />
     <Folder Include="Filters\Identity\" />
     <Folder Include="Filters\WebApplication\" />
-    <Folder Include="Helpers\WebApplication\" />
     <Folder Include="Middlewares\Identity\" />
     <Folder Include="Middlewares\WebApplication\" />
   </ItemGroup>

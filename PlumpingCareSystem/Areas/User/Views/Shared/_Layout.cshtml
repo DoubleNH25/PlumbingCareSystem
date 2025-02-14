@@ -36,6 +36,11 @@
     </header><!-- End Header -->
     <!-- ======= Sidebar ======= -->
     <aside id="sidebar" class="sidebar">
+
+        <!-- i will add picture here-->
+        @await Component.InvokeAsync("Layout", ViewBag.Username);
+        <!-- i will add picture here-->
+
         <ul class="sidebar-nav" id="sidebar-nav">
             <li class="nav-item">
                 <a class="nav-link" asp-area="User" asp-controller="Dashboard" asp-action="Index">
@@ -44,7 +49,12 @@
                 </a>
             </li><!-- End Dashboard Nav -->
             <li class="nav-heading">Settings</li>
-            
+            <li class="nav-item">
+                <a class="nav-link collapsed" asp-area="User" asp-controller="AuthenticationUser" asp-action="UserEdit">
+                    <i class="bi bi-gear"></i>
+                    <span>User Settings</span>
+                </a>
+            </li><!-- End Blank Page Nav -->
         </ul>
     </aside><!-- End Sidebar-->
     <main id="main" class="main">
