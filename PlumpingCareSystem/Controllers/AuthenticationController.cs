@@ -7,6 +7,7 @@ using PlumpingCareSystem.Entity.Identity.Entities;
 using PlumpingCareSystem.Entity.Identity.ViewModels;
 using PlumpingCareSystem.Service.Helpers.Identity.EmailHelper;
 using PlumpingCareSystem.Service.Helpers.Identity.ModelStateHelper;
+using PlumpingCareSystem.Service.ServiceHolding.Identity.Abstract;
 
 namespace PlumpingCareSystem.Controllers
 {
@@ -19,12 +20,13 @@ namespace PlumpingCareSystem.Controllers
 		private readonly IValidator<ForgotPasswordVM> _forgotPasswordValidator;
 		private readonly IValidator<ResetPasswordVM> _resetPasswordValidator;
 		private readonly IMapper _iMapper;
-		private readonly IEmailSendMethod _emailSendMethod;
+		private readonly IAuthenticationCustomService _authenticationService;
 		public AuthenticationController(UserManager<AppUser> userManager, 
 			SignInManager<AppUser> signInManager, IValidator<SignUpVM> signUpValidator, 
-			IValidator<LogInVM> logInValidator, IValidator<ForgotPasswordVM> forgotPasswordValidator, 
-			IMapper iMapper, IEmailSendMethod emailSendMethod, 
-			IValidator<ResetPasswordVM> resetPasswordValidator)
+			IValidator<LogInVM> logInValidator, 
+			IValidator<ForgotPasswordVM> forgotPasswordValidator, 
+			IMapper iMapper, IValidator<ResetPasswordVM> resetPasswordValidator, 
+			IAuthenticationCustomService authenticationService)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
@@ -32,8 +34,8 @@ namespace PlumpingCareSystem.Controllers
 			_logInValidator = logInValidator;
 			_forgotPasswordValidator = forgotPasswordValidator;
 			_iMapper = iMapper;
-			_emailSendMethod = emailSendMethod;
 			_resetPasswordValidator = resetPasswordValidator;
+			_authenticationService = authenticationService;
 		}
 		[HttpGet]
 		public IActionResult SignUp()
@@ -117,9 +119,7 @@ namespace PlumpingCareSystem.Controllers
 				ModelState.AddModelErrorList(new List<string> { "User does not exist!" });
 				return View();
 			}
-			string resetToken = await _userManager.GeneratePasswordResetTokenAsync(hasUser);
-			var passwordResetLink = Url.Action("ResetPassword", "Authentication", new { userId = hasUser.Id, token = resetToken }, HttpContext.Request.Scheme);
-			await _emailSendMethod.SendPasswordResetLinkWithToken(passwordResetLink!, request.Email);
+			await _authenticationService.CreateResetCredentialsAndSend(hasUser, HttpContext, Url, request);
 			return RedirectToAction("LogIn", "Authentication");
 		}
 		[HttpGet]
@@ -164,6 +164,10 @@ namespace PlumpingCareSystem.Controllers
 				List<string> errors = resetPasswordResult.Errors.Select(x => x.Description).ToList();
 				return RedirectToAction("ResetPassword", "Authentication", new { userId, token, errors });
 			}
+		}
+		public IActionResult AccessDenied()
+		{
+			return View();
 		}
 	}
 }
