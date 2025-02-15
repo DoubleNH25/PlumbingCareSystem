@@ -1,11 +1,12 @@
-﻿
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PlumpingCareSystem.Entity.Identity.Entities;
 using PlumpingCareSystem.Entity.Identity.ViewModels;
 using PlumpingCareSystem.Repository.Context;
+using PlumpingCareSystem.Service.Customization.Identity.ErrorDescriber;
+using PlumpingCareSystem.Service.Customization.Identity.Validators;
 using PlumpingCareSystem.Service.Helpers.Identity.EmailHelper;
 
 namespace PlumpingCareSystem.Service.Extensions.Identity
@@ -27,7 +28,10 @@ namespace PlumpingCareSystem.Service.Extensions.Identity
 			})
 				.AddRoleManager<RoleManager<AppRole>>()
 				.AddEntityFrameworkStores<AppDbContext>()
-				.AddDefaultTokenProviders();
+				.AddDefaultTokenProviders()
+				.AddErrorDescriber<LocalizationErrorDescriber>()
+				.AddPasswordValidator<CustomPasswordValidator>()
+				.AddUserValidator<CustomUserValidator>();
 
 			services.ConfigureApplicationCookie(opt =>
 			{

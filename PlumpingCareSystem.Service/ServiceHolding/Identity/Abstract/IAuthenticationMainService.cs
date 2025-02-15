@@ -5,7 +5,7 @@ using PlumpingCareSystem.Entity.Identity.ViewModels;
 
 namespace PlumpingCareSystem.Service.ServiceHolding.Identity.Abstract
 {
-	public interface IAuthenticationCustomService
+	public interface IAuthenticationMainService
 	{
 		Task CreateResetCredentialsAndSend(AppUser user, HttpContext context, IUrlHelper url, ForgotPasswordVM request);
 	}
