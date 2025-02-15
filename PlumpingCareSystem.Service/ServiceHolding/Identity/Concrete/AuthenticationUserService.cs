@@ -72,7 +72,8 @@ namespace PlumpingCareSystem.Service.ServiceHolding.Identity.Concrete
 				request.FileName = oldFilename;
 				request.FileType = oldFiletype;
 			}
-			var mappedUser = _mapper.Map<AppUser>(request);
+			//var mappedUser = _mapper.Map<AppUser>(request);
+			var mappedUser = _mapper.Map(request, user);
 			var userUpdate = await _userManager.UpdateAsync(mappedUser);
 			if (userUpdate.Succeeded)
 			{
