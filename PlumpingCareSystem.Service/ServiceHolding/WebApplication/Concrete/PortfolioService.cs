@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 using PlumpingCareSystem.Core.Enumerators;
 using PlumpingCareSystem.Entity.WebApplication.Entities;
 using PlumpingCareSystem.Entity.WebApplication.ViewModels.Portfolio;
 using PlumpingCareSystem.Repository.Repositories.Abstract;
 using PlumpingCareSystem.Repository.UnitOfWorks.Abstract;
 using PlumpingCareSystem.Service.Helpers.Generic.Image;
+using PlumpingCareSystem.Service.Messages.WebApplication;
 using PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract;
 
 namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
@@ -17,12 +19,15 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 		private readonly IMapper _mapper;
 		private readonly IGenericRepositories<Portfolio> _repository;
 		private readonly IImageHelper _imageHelper;
-		public PortfolioService(IUnitOfWork unitOfWork, IMapper mapper, IImageHelper imageHelper)
+		private readonly IToastNotification _toasty;
+		private const string Section = "Portfolio";
+		public PortfolioService(IUnitOfWork unitOfWork, IMapper mapper, IImageHelper imageHelper, IToastNotification toasty)
 		{
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
 			_repository = _unitOfWork.GetGenericRepository<Portfolio>();
 			_imageHelper = imageHelper;
+			_toasty = toasty;
 		}
 		public async Task<List<PortfolioListVM>> GetAllListAsync()
 		{
@@ -34,6 +39,7 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 			var imageResult = await _imageHelper.ImageUpload(request.Photo, ImageType.portfolio, null);
 			if (imageResult.Error != null)
 			{
+				_toasty.AddErrorToastMessage(imageResult.Error, new ToastrOptions { Title = NotificationMessagesWebApplication.FailedTitle });
 				return;
 			}
 			request.FileName = imageResult.Filename!;
@@ -42,6 +48,7 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 			var portfolio = _mapper.Map<Portfolio>(request);
 			await _repository.AddEntityAsync(portfolio);
 			await _unitOfWork.CommitAsync();
+			_toasty.AddSuccessToastMessage(NotificationMessagesWebApplication.AddMessage(Section), new ToastrOptions { Title = NotificationMessagesWebApplication.SuccessedTitle });
 		}
 		public async Task DeletePortfolioAsync(int id)
 		{
@@ -49,6 +56,8 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 			_repository.DeletetEntity(portfolio);
 			await _unitOfWork.CommitAsync();
 			_imageHelper.DeleteImage(portfolio.FileName);
+			_toasty.AddWarningToastMessage(NotificationMessagesWebApplication.DeleteMessage(Section), new ToastrOptions { Title = NotificationMessagesWebApplication.SuccessedTitle });
+
 		}
 		public async Task<PortfolioUpdateVM> GetPortfolioById(int id)
 		{
@@ -63,6 +72,7 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 				var imageResult = await _imageHelper.ImageUpload(request.Photo, ImageType.portfolio, null);
 				if (imageResult.Error != null)
 				{
+					_toasty.AddErrorToastMessage(imageResult.Error, new ToastrOptions { Title = NotificationMessagesWebApplication.FailedTitle });
 					return;
 				}
 				request.FileName = imageResult.Filename!;
@@ -75,6 +85,7 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 			{
 				_imageHelper.DeleteImage(oldPortfolio.FileName);
 			}
+			_toasty.AddInfoToastMessage(NotificationMessagesWebApplication.UpdateMessage(Section), new ToastrOptions { Title = NotificationMessagesWebApplication.SuccessedTitle });
 		}
 	}
 }

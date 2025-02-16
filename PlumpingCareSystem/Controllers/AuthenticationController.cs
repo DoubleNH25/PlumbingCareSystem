@@ -3,10 +3,11 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
 using PlumpingCareSystem.Entity.Identity.Entities;
 using PlumpingCareSystem.Entity.Identity.ViewModels;
-using PlumpingCareSystem.Service.Helpers.Identity.EmailHelper;
 using PlumpingCareSystem.Service.Helpers.Identity.ModelStateHelper;
+using PlumpingCareSystem.Service.Messages.Identity;
 using PlumpingCareSystem.Service.ServiceHolding.Identity.Abstract;
 
 namespace PlumpingCareSystem.Controllers
@@ -21,12 +22,11 @@ namespace PlumpingCareSystem.Controllers
 		private readonly IValidator<ResetPasswordVM> _resetPasswordValidator;
 		private readonly IMapper _iMapper;
 		private readonly IAuthenticationMainService _authenticationService;
-		public AuthenticationController(UserManager<AppUser> userManager, 
-			SignInManager<AppUser> signInManager, IValidator<SignUpVM> signUpValidator, 
-			IValidator<LogInVM> logInValidator, 
-			IValidator<ForgotPasswordVM> forgotPasswordValidator, 
-			IMapper iMapper, IValidator<ResetPasswordVM> resetPasswordValidator, 
-			IAuthenticationMainService authenticationService)
+		private readonly IToastNotification _toasty;
+
+		public AuthenticationController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, 
+			IValidator<SignUpVM> signUpValidator, IValidator<LogInVM> logInValidator, IValidator<ForgotPasswordVM> forgotPasswordValidator, 
+			IMapper iMapper, IValidator<ResetPasswordVM> resetPasswordValidator, IAuthenticationMainService authenticationService, IToastNotification toasty)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
@@ -36,6 +36,7 @@ namespace PlumpingCareSystem.Controllers
 			_iMapper = iMapper;
 			_resetPasswordValidator = resetPasswordValidator;
 			_authenticationService = authenticationService;
+			_toasty = toasty;
 		}
 		[HttpGet]
 		public IActionResult SignUp()
@@ -59,6 +60,7 @@ namespace PlumpingCareSystem.Controllers
 				ModelState.AddModelErrorList(userCreateResult.Errors);
 				return View();
 			}
+			_toasty.AddSuccessToastMessage(NotificationMessagesIdentity.SignUp(user.UserName!), new ToastrOptions { Title = NotificationMessagesIdentity.SuccessedTitle });
 			return RedirectToAction("LogIn", "Authentication");
 		}
 		[HttpGet]
@@ -69,7 +71,7 @@ namespace PlumpingCareSystem.Controllers
 		[HttpPost]
 		public async Task<IActionResult> LogIn(LogInVM request, string? returnUrl = null)
 		{
-			returnUrl = returnUrl ?? Url.Action("Index", "Dashboard", new { Area = "Admin" });
+			returnUrl = returnUrl ?? Url.Action("Index", "Dashboard", new { Area = "User" });
 			var validation = await _logInValidator.ValidateAsync(request);
 			if (!validation.IsValid)
 			{
@@ -86,6 +88,7 @@ namespace PlumpingCareSystem.Controllers
 			var logInResult = await _signInManager.PasswordSignInAsync(hasUser, request.Password, request.RememberMe, true);
 			if (logInResult.Succeeded)
 			{
+				_toasty.AddSuccessToastMessage(NotificationMessagesIdentity.LogInSuccess, new ToastrOptions { Title = NotificationMessagesIdentity.SuccessedTitle });
 				return Redirect(returnUrl!);
 			}
 			if (logInResult.IsLockedOut)
@@ -119,6 +122,7 @@ namespace PlumpingCareSystem.Controllers
 				ModelState.AddModelErrorList(new List<string> { "User does not exist!" });
 				return View();
 			}
+			_toasty.AddSuccessToastMessage(NotificationMessagesIdentity.PasswordResetSuccess, new ToastrOptions { Title = NotificationMessagesIdentity.SuccessedTitle });
 			await _authenticationService.CreateResetCredentialsAndSend(hasUser, HttpContext, Url, request);
 			return RedirectToAction("LogIn", "Authentication");
 		}
@@ -141,6 +145,7 @@ namespace PlumpingCareSystem.Controllers
 			var token = TempData["Token"];
 			if (userId == null || token == null)
 			{
+				_toasty.AddErrorToastMessage(NotificationMessagesIdentity.TokenValidationError, new ToastrOptions { Title = NotificationMessagesIdentity.FailedTitle });
 				return RedirectToAction("LogIn", "Authentication");
 			}
 			var validation = await _resetPasswordValidator.ValidateAsync(request);
@@ -152,11 +157,13 @@ namespace PlumpingCareSystem.Controllers
 			var hasUser = await _userManager.FindByIdAsync(userId.ToString()!);
 			if (hasUser == null)
 			{
+				_toasty.AddErrorToastMessage(NotificationMessagesIdentity.UserError, new ToastrOptions { Title = NotificationMessagesIdentity.FailedTitle });
 				return RedirectToAction("LogIn", "Authentication");
 			}
 			var resetPasswordResult = await _userManager.ResetPasswordAsync(hasUser!, token.ToString()!, request.Password);
 			if (resetPasswordResult.Succeeded)
 			{
+				_toasty.AddSuccessToastMessage(NotificationMessagesIdentity.PasswordChangeSuccess, new ToastrOptions { Title = NotificationMessagesIdentity.SuccessedTitle });
 				return RedirectToAction("LogIn", "Authentication");
 			}
 			else

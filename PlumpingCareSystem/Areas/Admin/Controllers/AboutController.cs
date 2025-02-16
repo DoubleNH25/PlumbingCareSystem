@@ -2,6 +2,7 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using PlumpingCareSystem.Entity.WebApplication.ViewModels.AboutVM;
+using PlumpingCareSystem.Service.Filters.WebApplication;
 using PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract;
 
 namespace PlumpingCareSystem.Areas.Admin.Controllers
@@ -26,6 +27,7 @@ namespace PlumpingCareSystem.Areas.Admin.Controllers
 			return View(aboutList);
 		}
 
+		[ServiceFilter(typeof(AddAboutPreventationFilter))]
 		[HttpGet]
 		public IActionResult AddAbout()
 		{

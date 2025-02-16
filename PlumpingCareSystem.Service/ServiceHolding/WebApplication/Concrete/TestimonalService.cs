@@ -3,12 +3,14 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 using PlumpingCareSystem.Core.Enumerators;
 using PlumpingCareSystem.Entity.WebApplication.Entities;
 using PlumpingCareSystem.Entity.WebApplication.ViewModels.Testimonal;
 using PlumpingCareSystem.Repository.Repositories.Abstract;
 using PlumpingCareSystem.Repository.UnitOfWorks.Abstract;
 using PlumpingCareSystem.Service.Helpers.Generic.Image;
+using PlumpingCareSystem.Service.Messages.WebApplication;
 using PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract;
 
 namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
@@ -19,12 +21,15 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 		private readonly IMapper _mapper;
 		private readonly IGenericRepositories<Testimonal> _repository;
 		private readonly IImageHelper _imageHelper;
-		public TestimonalService(IUnitOfWork unitOfWork, IMapper mapper, IImageHelper imageHelper)
+		private readonly IToastNotification _toasty;
+		private const string Section = "Testimonal";
+		public TestimonalService(IUnitOfWork unitOfWork, IMapper mapper, IImageHelper imageHelper, IToastNotification toasty)
 		{
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
 			_repository = _unitOfWork.GetGenericRepository<Testimonal>();
 			_imageHelper = imageHelper;
+			_toasty = toasty;
 		}
 		public async Task<List<TestimonalListVM>> GetAllListAsync()
 		{
@@ -36,6 +41,7 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 			var imageResult = await _imageHelper.ImageUpload(request.Photo, ImageType.testimonal, null);
 			if (imageResult.Error != null)
 			{
+				_toasty.AddErrorToastMessage(imageResult.Error, new ToastrOptions { Title = NotificationMessagesWebApplication.FailedTitle });
 				return;
 			}
 			request.FileName = imageResult.Filename!;
@@ -43,6 +49,7 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 			var testimonal = _mapper.Map<Testimonal>(request);
 			await _repository.AddEntityAsync(testimonal);
 			await _unitOfWork.CommitAsync();
+			_toasty.AddSuccessToastMessage(NotificationMessagesWebApplication.AddMessage(Section), new ToastrOptions { Title = NotificationMessagesWebApplication.SuccessedTitle });
 		}
 		public async Task DeleteTestimonalAsync(int id)
 		{
@@ -50,6 +57,7 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 			_repository.DeletetEntity(testimonal);
 			await _unitOfWork.CommitAsync();
 			_imageHelper.DeleteImage(testimonal.FileName);
+			_toasty.AddWarningToastMessage(NotificationMessagesWebApplication.DeleteMessage(Section), new ToastrOptions { Title = NotificationMessagesWebApplication.SuccessedTitle });
 
 		}
 		public async Task<TestimonalUpdateVM> GetTestimonalById(int id)
@@ -65,6 +73,7 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 				var imageResult = await _imageHelper.ImageUpload(request.Photo, ImageType.testimonal, null);
 				if (imageResult.Error != null)
 				{
+					_toasty.AddErrorToastMessage(imageResult.Error, new ToastrOptions { Title = NotificationMessagesWebApplication.FailedTitle });
 					return;
 				}
 				request.FileName = imageResult.Filename!;
@@ -77,6 +86,7 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 			{
 				_imageHelper.DeleteImage(oldTestimonal.FileName);
 			}
+			_toasty.AddInfoToastMessage(NotificationMessagesWebApplication.UpdateMessage(Section), new ToastrOptions { Title = NotificationMessagesWebApplication.SuccessedTitle });
 		}
 	}
 }

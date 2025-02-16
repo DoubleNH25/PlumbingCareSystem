@@ -46,7 +46,7 @@ namespace PlumpingCareSystem.Service.Extensions.Identity
 
 			services.Configure<DataProtectionTokenProviderOptions>(opt =>
 			{
-				opt.TokenLifespan = TimeSpan.FromMinutes(60);
+				opt.TokenLifespan = TimeSpan.FromSeconds(20);
 			});
 			services.AddScoped<IEmailSendMethod, EmailSendMethod>();
 

@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract;
 using PlumpingCareSystem.Service.Helpers.Generic.Image;
 using PlumpingCareSystem.Core.Enumerators;
+using NToastNotify;
+using PlumpingCareSystem.Service.Messages.WebApplication;
 
 
 namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
@@ -18,12 +20,15 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 		private readonly IMapper _mapper;
 		private readonly IGenericRepositories<About> _repository;
 		private readonly IImageHelper _imageHelper;
-		public AboutService(IUnitOfWork unitOfWork, IMapper mapper, IImageHelper imageHelper)
+		private readonly IToastNotification _toasty;
+		private const string Section = "About section";
+		public AboutService(IUnitOfWork unitOfWork, IMapper mapper, IImageHelper imageHelper, IToastNotification toasty)
 		{
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
 			_repository = _unitOfWork.GetGenericRepository<About>();
 			_imageHelper = imageHelper;
+			_toasty = toasty;
 		}
 		public async Task<List<AboutListVM>> GetAllListAsync()
 		{
@@ -35,6 +40,7 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 			var imageResult = await _imageHelper.ImageUpload(request.Photo, ImageType.about, null);
 			if (imageResult.Error != null)
 			{
+				_toasty.AddErrorToastMessage(imageResult.Error, new ToastrOptions { Title = NotificationMessagesWebApplication.FailedTitle });
 				return;
 			}
 			request.FileName = imageResult.Filename!;
@@ -42,6 +48,7 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 			var about = _mapper.Map<About>(request);
 			await _repository.AddEntityAsync(about);
 			await _unitOfWork.CommitAsync();
+			_toasty.AddSuccessToastMessage(NotificationMessagesWebApplication.AddMessage(Section), new ToastrOptions { Title = NotificationMessagesWebApplication.SuccessedTitle });
 		}
 		public async Task DeleteAboutAsync(int id)
 		{
@@ -49,6 +56,7 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 			_repository.DeletetEntity(about);
 			await _unitOfWork.CommitAsync();
 			_imageHelper.DeleteImage(about.FileName);
+			_toasty.AddWarningToastMessage(NotificationMessagesWebApplication.DeleteMessage(Section), new ToastrOptions { Title = NotificationMessagesWebApplication.SuccessedTitle });
 		}
 		public async Task<AboutUpdateVM> GetAboutById(int id)
 		{
@@ -63,6 +71,7 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 				var imageResult = await _imageHelper.ImageUpload(request.Photo, ImageType.about, null);
 				if (imageResult.Error != null)
 				{
+					_toasty.AddErrorToastMessage(imageResult.Error, new ToastrOptions { Title = NotificationMessagesWebApplication.FailedTitle });
 					return;
 				}
 				request.FileName = imageResult.Filename!;
@@ -75,6 +84,7 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 			{
 				_imageHelper.DeleteImage(oldAbout.FileName);
 			}
+			_toasty.AddInfoToastMessage(NotificationMessagesWebApplication.UpdateMessage(Section), new ToastrOptions { Title = NotificationMessagesWebApplication.SuccessedTitle });
 		}
 	}
 }

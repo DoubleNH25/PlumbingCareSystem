@@ -6,6 +6,7 @@ using System.Reflection;
 using PlumpingCareSystem.Service.Extensions.Identity;
 using Microsoft.Extensions.Configuration;
 using PlumpingCareSystem.Service.Helpers.Generic.Image;
+using PlumpingCareSystem.Service.Extensions.WebApplication;
 
 namespace PlumpingCareSystem.Service.Extensions
 {
@@ -15,6 +16,8 @@ namespace PlumpingCareSystem.Service.Extensions
 			(this IServiceCollection services, IConfiguration config)
 		{
 			services.LoadIdentityExtensions(config);
+
+			services.LoadWebApplicationExtensions();
 
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			

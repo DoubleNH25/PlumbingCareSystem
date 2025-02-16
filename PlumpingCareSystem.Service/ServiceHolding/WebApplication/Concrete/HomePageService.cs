@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 using PlumpingCareSystem.Entity.WebApplication.Entities;
 using PlumpingCareSystem.Entity.WebApplication.ViewModels.HomePage;
 using PlumpingCareSystem.Repository.Repositories.Abstract;
 using PlumpingCareSystem.Repository.UnitOfWorks.Abstract;
+using PlumpingCareSystem.Service.Messages.WebApplication;
 using PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract;
 
 namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
@@ -14,11 +16,14 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IMapper _mapper;
 		private readonly IGenericRepositories<HomePage> _repository;
-		public HomePageService(IUnitOfWork unitOfWork, IMapper mapper)
+		private readonly IToastNotification _toasty;
+		private const string Section = "Home Page section";
+		public HomePageService(IUnitOfWork unitOfWork, IMapper mapper, IToastNotification toasty)
 		{
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
 			_repository = _unitOfWork.GetGenericRepository<HomePage>();
+			_toasty = toasty;
 		}
 		public async Task<List<HomePageListVM>> GetAllListAsync()
 		{
@@ -30,12 +35,14 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 			var homePage = _mapper.Map<HomePage>(request);
 			await _repository.AddEntityAsync(homePage);
 			await _unitOfWork.CommitAsync();
+			_toasty.AddSuccessToastMessage(NotificationMessagesWebApplication.AddMessage(Section), new ToastrOptions { Title = NotificationMessagesWebApplication.SuccessedTitle });
 		}
 		public async Task DeleteHomePageAsync(int id)
 		{
 			var homePage = await _repository.GetEntityByIdAsync(id);
 			_repository.DeletetEntity(homePage);
 			await _unitOfWork.CommitAsync();
+			_toasty.AddWarningToastMessage(NotificationMessagesWebApplication.DeleteMessage(Section), new ToastrOptions { Title = NotificationMessagesWebApplication.SuccessedTitle });
 		}
 		public async Task<HomePageUpdateVM> GetHomePageById(int id)
 		{
@@ -47,6 +54,7 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 			var homePage = _mapper.Map<HomePage>(request);
 			_repository.UpdatetEntity(homePage);
 			await _unitOfWork.CommitAsync();
+			_toasty.AddInfoToastMessage(NotificationMessagesWebApplication.UpdateMessage(Section), new ToastrOptions { Title = NotificationMessagesWebApplication.SuccessedTitle });
 		}
 	}
 }

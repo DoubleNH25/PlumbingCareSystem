@@ -1,9 +1,14 @@
+using NToastNotify;
 using PlumpingCareSystem.Repository.Extensions;
 using PlumpingCareSystem.Service.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddNToastNotifyToastr(new ToastrOptions
+{
+	ProgressBar = false,
+	PositionClass = ToastPositions.BottomCenter
+});
 
 builder.Services.LoadRepositoryLayerExtensions(builder.Configuration);
 builder.Services.LoadServiceLayerExtensions(builder.Configuration);

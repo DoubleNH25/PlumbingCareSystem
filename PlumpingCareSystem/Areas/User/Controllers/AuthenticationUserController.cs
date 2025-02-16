@@ -4,9 +4,11 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
 using PlumpingCareSystem.Entity.Identity.Entities;
 using PlumpingCareSystem.Entity.Identity.ViewModels;
 using PlumpingCareSystem.Service.Helpers.Identity.ModelStateHelper;
+using PlumpingCareSystem.Service.Messages.Identity;
 using PlumpingCareSystem.Service.ServiceHolding.Identity.Abstract;
 
 namespace PlumpingCareSystem.Areas.User.Controllers
@@ -18,12 +20,14 @@ namespace PlumpingCareSystem.Areas.User.Controllers
 		private readonly UserManager<AppUser> _userManager;
 		private readonly IValidator<UserEditVM> _userEditValidator;
 		private readonly IAuthenticationUserService _authenticationUserService;
-		public AuthenticationUserController(UserManager<AppUser> userManager, 
-			IValidator<UserEditVM> userEditValidator, IAuthenticationUserService authenticationUserService)
+		private readonly IToastNotification _toasty;
+		public AuthenticationUserController(UserManager<AppUser> userManager, IValidator<UserEditVM> userEditValidator, 
+			IAuthenticationUserService authenticationUserService, IToastNotification toasty)
 		{
 			_userManager = userManager;
 			_userEditValidator = userEditValidator;
 			_authenticationUserService = authenticationUserService;
+			_toasty = toasty;
 		}
 		[HttpGet]
 		public async Task<ActionResult> UserEdit()
@@ -49,6 +53,8 @@ namespace PlumpingCareSystem.Areas.User.Controllers
 				return View();
 			}
 			ViewBag.Username = user!.UserName;
+			_toasty.AddInfoToastMessage(NotificationMessagesIdentity.UserEdit(user.UserName!), new ToastrOptions { Title = NotificationMessagesIdentity.SuccessedTitle });
+
 			return RedirectToAction("Index", "Dashboard", new { Area = "User" });
 		}
 	}

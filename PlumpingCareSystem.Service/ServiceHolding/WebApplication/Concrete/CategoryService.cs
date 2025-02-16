@@ -3,10 +3,12 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 using PlumpingCareSystem.Entity.WebApplication.Entities;
 using PlumpingCareSystem.Entity.WebApplication.ViewModels.Category;
 using PlumpingCareSystem.Repository.Repositories.Abstract;
 using PlumpingCareSystem.Repository.UnitOfWorks.Abstract;
+using PlumpingCareSystem.Service.Messages.WebApplication;
 using PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract;
 
 namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
@@ -16,12 +18,17 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IMapper _mapper;
 		private readonly IGenericRepositories<Category> _repository;
-		public CategoryService(IUnitOfWork unitOfWork, IMapper mapper)
+		private readonly IToastNotification _toasty;
+		private const string Section = "Category";
+
+		public CategoryService(IUnitOfWork unitOfWork, IMapper mapper, IToastNotification toasty)
 		{
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
 			_repository = _unitOfWork.GetGenericRepository<Category>();
+			_toasty = toasty;
 		}
+
 		public async Task<List<CategoryListVM>> GetAllListAsync()
 		{
 			var categoryListVM = await _repository.GetAlltEntityList().ProjectTo<CategoryListVM>(_mapper.ConfigurationProvider).ToListAsync();
@@ -32,12 +39,14 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 			var category = _mapper.Map<Category>(request);
 			await _repository.AddEntityAsync(category);
 			await _unitOfWork.CommitAsync();
+			_toasty.AddSuccessToastMessage(NotificationMessagesWebApplication.AddMessage(Section), new ToastrOptions { Title = NotificationMessagesWebApplication.SuccessedTitle });
 		}
 		public async Task DeleteCategoryAsync(int id)
 		{
 			var category = await _repository.GetEntityByIdAsync(id);
 			_repository.DeletetEntity(category);
 			await _unitOfWork.CommitAsync();
+			_toasty.AddWarningToastMessage(NotificationMessagesWebApplication.DeleteMessage(Section), new ToastrOptions { Title = NotificationMessagesWebApplication.SuccessedTitle });
 		}
 		public async Task<CategoryUpdateVM> GetCategoryById(int id)
 		{
@@ -49,6 +58,7 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 			var category = _mapper.Map<Category>(request);
 			_repository.UpdatetEntity(category);
 			await _unitOfWork.CommitAsync();
+			_toasty.AddInfoToastMessage(NotificationMessagesWebApplication.UpdateMessage(Section), new ToastrOptions { Title = NotificationMessagesWebApplication.SuccessedTitle });
 		}
 	}
 }
