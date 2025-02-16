@@ -7,6 +7,7 @@ using PlumpingCareSystem.Repository.UnitOfWorks.Abstract;
 using Microsoft.EntityFrameworkCore;
 using PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract;
 using PlumpingCareSystem.Service.Helpers.Generic.Image;
+using PlumpingCareSystem.Core.Enumerators;
 
 
 namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
@@ -31,6 +32,13 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 		}
 		public async Task AddAboutAsync(AboutAddVM request)
 		{
+			var imageResult = await _imageHelper.ImageUpload(request.Photo, ImageType.about, null);
+			if (imageResult.Error != null)
+			{
+				return;
+			}
+			request.FileName = imageResult.Filename!;
+			request.FileType = imageResult.FileType!;
 			var about = _mapper.Map<About>(request);
 			await _repository.AddEntityAsync(about);
 			await _unitOfWork.CommitAsync();
@@ -40,6 +48,7 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 			var about = await _repository.GetEntityByIdAsync(id);
 			_repository.DeletetEntity(about);
 			await _unitOfWork.CommitAsync();
+			_imageHelper.DeleteImage(about.FileName);
 		}
 		public async Task<AboutUpdateVM> GetAboutById(int id)
 		{
@@ -48,9 +57,24 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 		}
 		public async Task UpdateAboutAsync(AboutUpdateVM request)
 		{
+			var oldAbout = await _repository.Where(x => x.Id == request.Id).AsNoTracking().FirstAsync();
+			if (request.Photo != null)
+			{
+				var imageResult = await _imageHelper.ImageUpload(request.Photo, ImageType.about, null);
+				if (imageResult.Error != null)
+				{
+					return;
+				}
+				request.FileName = imageResult.Filename!;
+				request.FileType = imageResult.FileType!;
+			}
 			var about = _mapper.Map<About>(request);
 			_repository.UpdatetEntity(about);
 			await _unitOfWork.CommitAsync();
+			if (request.Photo != null)
+			{
+				_imageHelper.DeleteImage(oldAbout.FileName);
+			}
 		}
 	}
 }
