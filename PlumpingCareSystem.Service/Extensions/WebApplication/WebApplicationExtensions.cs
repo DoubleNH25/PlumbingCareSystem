@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PlumpingCareSystem.Entity.WebApplication.Entities;
 using PlumpingCareSystem.Service.Filters.WebApplication;
 
 namespace PlumpingCareSystem.Service.Extensions.WebApplication
@@ -7,7 +8,7 @@ namespace PlumpingCareSystem.Service.Extensions.WebApplication
 	{
 		public static IServiceCollection LoadWebApplicationExtensions(this IServiceCollection services)
 		{
-			services.AddScoped(typeof(AddAboutPreventationFilter));
+			services.AddScoped(typeof(GenericAddPreventationFilter<About>));
 			return services;
 		}
 	}
