@@ -9,7 +9,7 @@ using PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract;
 
 namespace PlumpingCareSystem.Areas.Admin.Controllers
 {
-	[Authorize]
+	[Authorize(Policy = "AdminObserver")]
 	[Area("Admin")]
 	public class CategoryController : Controller
 	{
@@ -64,6 +64,8 @@ namespace PlumpingCareSystem.Areas.Admin.Controllers
 			validation.AddToModelState(this.ModelState);
 			return View();
 		}
+
+		[Authorize(Roles = "SuperAdmin")]
 		public async Task<IActionResult> DeleteCategory(int id)
 		{
 			await _categoryService.DeleteCategoryAsync(id);

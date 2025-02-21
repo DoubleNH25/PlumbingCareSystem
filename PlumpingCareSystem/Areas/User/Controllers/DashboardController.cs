@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace PlumpingCareSystem.Areas.User.Controllers
 {
-	[Authorize]
+	[Authorize(Roles = "Member,SuperAdmin")]
 	[Area("User")]
 	public class DashboardController : Controller
 	{

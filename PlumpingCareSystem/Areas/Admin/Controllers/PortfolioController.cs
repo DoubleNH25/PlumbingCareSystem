@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PlumpingCareSystem.Entity.WebApplication.Entities;
 using PlumpingCareSystem.Entity.WebApplication.ViewModels.Portfolio;
@@ -8,6 +9,7 @@ using PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract;
 
 namespace PlumpingCareSystem.Areas.Admin.Controllers
 {
+	[Authorize(Policy = "AdminObserver")]
 	[Area("Admin")]
 	public class PortfolioController : Controller
 	{
@@ -70,6 +72,8 @@ namespace PlumpingCareSystem.Areas.Admin.Controllers
 			validation.AddToModelState(this.ModelState);
 			return View();
 		}
+
+		[Authorize(Roles = "SuperAdmin")]
 		public async Task<IActionResult> DeletePortfolio(int id)
 		{
 			await _portfolioService.DeletePortfolioAsync(id);

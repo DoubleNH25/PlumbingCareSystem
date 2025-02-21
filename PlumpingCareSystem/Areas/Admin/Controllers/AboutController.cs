@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PlumpingCareSystem.Entity.WebApplication.Entities;
 using PlumpingCareSystem.Entity.WebApplication.ViewModels.AboutVM;
@@ -8,6 +9,7 @@ using PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract;
 
 namespace PlumpingCareSystem.Areas.Admin.Controllers
 {
+	[Authorize(Policy = "AdminObserver")]
 	[Area("Admin")]
 	public class AboutController : Controller
 	{
@@ -69,6 +71,7 @@ namespace PlumpingCareSystem.Areas.Admin.Controllers
 			return View();
 		}
 
+		[Authorize(Roles = "SuperAdmin")]
 		public async Task<IActionResult> DeleteAbout(int id)
 		{
 			await _aboutService.DeleteAboutAsync(id);
