@@ -8,7 +8,8 @@ namespace PlumpingCareSystem.Service.Extensions.WebApplication
 	{
 		public static IServiceCollection LoadWebApplicationExtensions(this IServiceCollection services)
 		{
-			services.AddScoped(typeof(GenericAddPreventationFilter<About>));
+			services.AddScoped(typeof(GenericAddPreventationFilter<>));
+			services.AddScoped(typeof(GenericNotFoundFilter<>));
 			return services;
 		}
 	}

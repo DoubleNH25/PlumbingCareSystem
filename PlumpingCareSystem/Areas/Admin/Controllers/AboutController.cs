@@ -48,6 +48,7 @@ namespace PlumpingCareSystem.Areas.Admin.Controllers
 			return View();
 		}
 
+		[ServiceFilter(typeof(GenericNotFoundFilter<About>))]
 		[HttpGet]
 		public async Task<IActionResult> UpdateAbout(int id)
 		{

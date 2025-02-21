@@ -2,7 +2,9 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PlumpingCareSystem.Entity.WebApplication.Entities;
 using PlumpingCareSystem.Entity.WebApplication.ViewModels.Category;
+using PlumpingCareSystem.Service.Filters.WebApplication;
 using PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract;
 
 namespace PlumpingCareSystem.Areas.Admin.Controllers
@@ -42,6 +44,8 @@ namespace PlumpingCareSystem.Areas.Admin.Controllers
 			validation.AddToModelState(this.ModelState);
 			return View();
 		}
+
+		[ServiceFilter(typeof(GenericNotFoundFilter<Category>))]
 		[HttpGet]
 		public async Task<IActionResult> UpdateCategory(int id)
 		{

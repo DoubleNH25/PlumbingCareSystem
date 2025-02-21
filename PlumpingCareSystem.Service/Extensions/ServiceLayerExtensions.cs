@@ -3,6 +3,7 @@ using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using PlumpingCareSystem.Service.FluentValidation.WebApplication.HomePageValidation;
 using System.Reflection;
+using NToastNotify;
 using PlumpingCareSystem.Service.Extensions.Identity;
 using Microsoft.Extensions.Configuration;
 using PlumpingCareSystem.Service.Helpers.Generic.Image;
@@ -41,6 +42,9 @@ namespace PlumpingCareSystem.Service.Extensions
 			services.AddValidatorsFromAssemblyContaining<HomePageAddValidation>();
 
 			services.AddScoped<IImageHelper, ImageHelper>();
+
+
+
 
 			return services;
 		}

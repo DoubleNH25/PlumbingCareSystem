@@ -1,7 +1,9 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
+using PlumpingCareSystem.Entity.WebApplication.Entities;
 using PlumpingCareSystem.Entity.WebApplication.ViewModels.HomePage;
+using PlumpingCareSystem.Service.Filters.WebApplication;
 using PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract;
 
 namespace PlumpingCareSystem.Areas.Admin.Controllers
@@ -24,6 +26,8 @@ namespace PlumpingCareSystem.Areas.Admin.Controllers
 			var homePageList = await _homePageService.GetAllListAsync();
 			return View(homePageList);
 		}
+
+		[ServiceFilter(typeof(GenericAddPreventationFilter<HomePage>))]
 		[HttpGet]
 		public IActionResult AddHomePage()
 		{
@@ -41,6 +45,8 @@ namespace PlumpingCareSystem.Areas.Admin.Controllers
 			validation.AddToModelState(this.ModelState);
 			return View();
 		}
+
+		[ServiceFilter(typeof(GenericNotFoundFilter<HomePage>))]
 		[HttpGet]
 		public async Task<IActionResult> UpdateHomePage(int id)
 		{

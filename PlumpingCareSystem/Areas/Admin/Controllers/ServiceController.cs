@@ -1,7 +1,9 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
+using PlumpingCareSystem.Entity.WebApplication.Entities;
 using PlumpingCareSystem.Entity.WebApplication.ViewModels.Service;
+using PlumpingCareSystem.Service.Filters.WebApplication;
 using PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract;
 
 namespace PlumpingCareSystem.Areas.Admin.Controllers
@@ -43,6 +45,8 @@ namespace PlumpingCareSystem.Areas.Admin.Controllers
 			return View();
 
 		}
+
+		[ServiceFilter(typeof(GenericNotFoundFilter<Services>))]
 		[HttpGet]
 		public async Task<IActionResult> UpdateService(int id)
 		{
