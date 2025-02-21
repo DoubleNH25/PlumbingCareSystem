@@ -9,6 +9,7 @@ using PlumpingCareSystem.Entity.WebApplication.Entities;
 using PlumpingCareSystem.Entity.WebApplication.ViewModels.Testimonal;
 using PlumpingCareSystem.Repository.Repositories.Abstract;
 using PlumpingCareSystem.Repository.UnitOfWorks.Abstract;
+using PlumpingCareSystem.Service.Exception.WebApplication;
 using PlumpingCareSystem.Service.Helpers.Generic.Image;
 using PlumpingCareSystem.Service.Messages.WebApplication;
 using PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract;
@@ -81,10 +82,11 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 			}
 			var testimonal = _mapper.Map<Testimonal>(request);
 			_repository.UpdatetEntity(testimonal);
-			await _unitOfWork.CommitAsync();
-			if (request.Photo != null)
+			var result = await _unitOfWork.CommitAsync();
+			if (!result)
 			{
-				_imageHelper.DeleteImage(oldTestimonal.FileName);
+				_imageHelper.DeleteImage(request.FileName);
+				throw new ClientSideExceptions(ExceptionMessages.ConcurencyException);
 			}
 			_toasty.AddInfoToastMessage(NotificationMessagesWebApplication.UpdateMessage(Section), new ToastrOptions { Title = NotificationMessagesWebApplication.SuccessedTitle });
 		}

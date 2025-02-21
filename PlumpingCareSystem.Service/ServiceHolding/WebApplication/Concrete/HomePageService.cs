@@ -6,6 +6,7 @@ using PlumpingCareSystem.Entity.WebApplication.Entities;
 using PlumpingCareSystem.Entity.WebApplication.ViewModels.HomePage;
 using PlumpingCareSystem.Repository.Repositories.Abstract;
 using PlumpingCareSystem.Repository.UnitOfWorks.Abstract;
+using PlumpingCareSystem.Service.Exception.WebApplication;
 using PlumpingCareSystem.Service.Messages.WebApplication;
 using PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract;
 
@@ -53,7 +54,12 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 		{
 			var homePage = _mapper.Map<HomePage>(request);
 			_repository.UpdatetEntity(homePage);
-			await _unitOfWork.CommitAsync();
+			var result = await _unitOfWork.CommitAsync();
+
+			if (!result)
+			{
+				throw new ClientSideExceptions(ExceptionMessages.ConcurencyException);
+			}
 			_toasty.AddInfoToastMessage(NotificationMessagesWebApplication.UpdateMessage(Section), new ToastrOptions { Title = NotificationMessagesWebApplication.SuccessedTitle });
 		}
 	}

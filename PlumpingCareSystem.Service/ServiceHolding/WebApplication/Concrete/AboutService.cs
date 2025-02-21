@@ -10,6 +10,7 @@ using PlumpingCareSystem.Service.Helpers.Generic.Image;
 using PlumpingCareSystem.Core.Enumerators;
 using NToastNotify;
 using PlumpingCareSystem.Service.Messages.WebApplication;
+using PlumpingCareSystem.Service.Exception.WebApplication;
 
 
 namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
@@ -79,7 +80,12 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 			}
 			var about = _mapper.Map<About>(request);
 			_repository.UpdatetEntity(about);
-			await _unitOfWork.CommitAsync();
+			var result = await _unitOfWork.CommitAsync();
+			if (!result)
+			{
+				_imageHelper.DeleteImage(request.FileName);
+				throw new ClientSideExceptions(ExceptionMessages.ConcurencyException);
+			}
 			if (request.Photo != null)
 			{
 				_imageHelper.DeleteImage(oldAbout.FileName);

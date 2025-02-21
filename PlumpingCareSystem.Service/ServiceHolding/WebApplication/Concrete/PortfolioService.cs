@@ -7,6 +7,7 @@ using PlumpingCareSystem.Entity.WebApplication.Entities;
 using PlumpingCareSystem.Entity.WebApplication.ViewModels.Portfolio;
 using PlumpingCareSystem.Repository.Repositories.Abstract;
 using PlumpingCareSystem.Repository.UnitOfWorks.Abstract;
+using PlumpingCareSystem.Service.Exception.WebApplication;
 using PlumpingCareSystem.Service.Helpers.Generic.Image;
 using PlumpingCareSystem.Service.Messages.WebApplication;
 using PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract;
@@ -80,10 +81,11 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 			}
 			var portfolio = _mapper.Map<Portfolio>(request);
 			_repository.UpdatetEntity(portfolio);
-			await _unitOfWork.CommitAsync();
-			if (request.Photo != null)
+			var result = await _unitOfWork.CommitAsync();
+			if (!result)
 			{
-				_imageHelper.DeleteImage(oldPortfolio.FileName);
+				_imageHelper.DeleteImage(request.FileName);
+				throw new ClientSideExceptions(ExceptionMessages.ConcurencyException);
 			}
 			_toasty.AddInfoToastMessage(NotificationMessagesWebApplication.UpdateMessage(Section), new ToastrOptions { Title = NotificationMessagesWebApplication.SuccessedTitle });
 		}

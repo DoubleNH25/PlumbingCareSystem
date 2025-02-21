@@ -9,6 +9,7 @@ using PlumpingCareSystem.Entity.WebApplication.Entities;
 using PlumpingCareSystem.Entity.WebApplication.ViewModels.Team;
 using PlumpingCareSystem.Repository.Repositories.Abstract;
 using PlumpingCareSystem.Repository.UnitOfWorks.Abstract;
+using PlumpingCareSystem.Service.Exception.WebApplication;
 using PlumpingCareSystem.Service.Helpers.Generic.Image;
 using PlumpingCareSystem.Service.Messages.WebApplication;
 using PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract;
@@ -83,11 +84,11 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 
 			var team = _mapper.Map<Team>(request);
 			_repository.UpdatetEntity(team);
-			await _unitOfWork.CommitAsync();
-
-			if (request.Photo != null)
+			var result = await _unitOfWork.CommitAsync();
+			if (!result)
 			{
-				_imageHelper.DeleteImage(oldTeam.FileName);
+				_imageHelper.DeleteImage(request.FileName);
+				throw new ClientSideExceptions(ExceptionMessages.ConcurencyException);
 			}
 			_toasty.AddInfoToastMessage(NotificationMessagesWebApplication.UpdateMessage(Section), new ToastrOptions { Title = NotificationMessagesWebApplication.SuccessedTitle });
 		}
