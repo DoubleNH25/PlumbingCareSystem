@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,6 +9,7 @@ using PlumpingCareSystem.Repository.Context;
 using PlumpingCareSystem.Service.Customization.Identity.ErrorDescriber;
 using PlumpingCareSystem.Service.Customization.Identity.Validators;
 using PlumpingCareSystem.Service.Helpers.Identity.EmailHelper;
+using PlumpingCareSystem.Service.Requirement;
 
 namespace PlumpingCareSystem.Service.Extensions.Identity
 {
@@ -51,6 +53,16 @@ namespace PlumpingCareSystem.Service.Extensions.Identity
 			services.AddScoped<IEmailSendMethod, EmailSendMethod>();
 
 			services.Configure<GmailInformationVM>(config.GetSection("EmailSettings"));
+
+			services.AddScoped<IAuthorizationHandler, AdminObserverRequirementHandler>();
+
+			services.AddAuthorization(options =>
+			{
+				options.AddPolicy("AdminObserver", policy =>
+				{
+					policy.AddRequirements(new AdminObserverRequirement());
+				});
+			});
 
 			return services;
 		}
