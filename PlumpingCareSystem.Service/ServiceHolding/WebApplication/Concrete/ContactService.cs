@@ -62,5 +62,12 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Concrete
 			}
 			_toasty.AddInfoToastMessage(NotificationMessagesWebApplication.UpdateMessage(Section), new ToastrOptions { Title = NotificationMessagesWebApplication.SuccessedTitle });
 		}
+		//UI SIDE METHODS
+		public async Task<List<ContactListForUI>> GetAllListForUIAsync()
+		{
+			var contactListForUI = await _repository.GetAlltEntityList().ProjectTo<ContactListForUI>(_mapper.ConfigurationProvider).ToListAsync();
+
+			return contactListForUI;
+		}
 	}
 }

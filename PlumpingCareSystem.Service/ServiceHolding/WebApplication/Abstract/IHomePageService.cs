@@ -9,6 +9,6 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract
 		Task DeleteHomePageAsync(int id);
 		Task<HomePageUpdateVM> GetHomePageById(int id);
 		Task UpdateHomePageAsync(HomePageUpdateVM request);
-		Task<List<HomePageVMForUI>> GetAllListForUI();
+		Task<List<HomePageVMForUI>> GetAllListForUIAsync();
 	}
 }

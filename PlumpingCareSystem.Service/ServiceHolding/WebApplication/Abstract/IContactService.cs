@@ -9,5 +9,6 @@ namespace PlumpingCareSystem.Service.ServiceHolding.WebApplication.Abstract
 		Task DeleteContactAsync(int id);
 		Task<ContactUpdateVM> GetContactById(int id);
 		Task UpdateContactAsync(ContactUpdateVM request);
+		Task<List<ContactListForUI>> GetAllListForUIAsync();
 	}
 }
