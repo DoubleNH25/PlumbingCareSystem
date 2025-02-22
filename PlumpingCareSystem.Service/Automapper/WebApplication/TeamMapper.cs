@@ -11,6 +11,8 @@ namespace PlumpingCareSystem.Service.Automapper.WebApplication
 			CreateMap<Team, TeamListVM>().ReverseMap();
 			CreateMap<Team, TeamAddVM>().ReverseMap();
 			CreateMap<Team, TeamUpdateVM>().ReverseMap();
+			CreateMap<Team, TeamListForUI>().ReverseMap();
+
 		}
 	}
 }

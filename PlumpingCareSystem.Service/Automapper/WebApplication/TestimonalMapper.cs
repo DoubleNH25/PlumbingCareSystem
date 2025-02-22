@@ -11,6 +11,7 @@ namespace PlumpingCareSystem.Service.Automapper.WebApplication
 			CreateMap<Testimonal, TestimonalListVM>().ReverseMap();
 			CreateMap<Testimonal, TestimonalAddVM>().ReverseMap();
 			CreateMap<Testimonal, TestimonalUpdateVM>().ReverseMap();
+			CreateMap<Testimonal, TestimonalListForUI>().ReverseMap();
 		}
 	}
 }

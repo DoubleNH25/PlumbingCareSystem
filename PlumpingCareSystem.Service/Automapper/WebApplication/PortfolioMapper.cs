@@ -11,6 +11,7 @@ namespace PlumpingCareSystem.Service.Automapper.WebApplication
 			CreateMap<Portfolio, PortfolioListVM>().ReverseMap();
 			CreateMap<Portfolio, PortfolioAddVM>().ReverseMap();
 			CreateMap<Portfolio, PortfolioUpdateVM>().ReverseMap();
+			CreateMap<Portfolio, PortfolioListForUI>().ReverseMap();
 		}
 	}
 }

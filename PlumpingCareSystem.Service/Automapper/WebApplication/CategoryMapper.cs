@@ -12,6 +12,8 @@ namespace PlumpingCareSystem.Service.Automapper.WebApplication
 			CreateMap<Category, CategoryListVM>().ReverseMap();
 			CreateMap<Category, CategoryAddVM>().ReverseMap();
 			CreateMap<Category, CategoryUpdateVM>().ReverseMap();
+			CreateMap<Category, CategoryListForUI>().ReverseMap();
+
 		}
 	}
 }

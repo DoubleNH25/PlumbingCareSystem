@@ -11,6 +11,7 @@ namespace PlumpingCareSystem.Service.Automapper.WebApplication
 			CreateMap<About, AboutListVM>().ReverseMap();
 			CreateMap<About, AboutAddVM>().ReverseMap();
 			CreateMap<About, AboutUpdateVM>().ReverseMap();
+			CreateMap<About, AboutListForUI>().ReverseMap();
 		}
 	}
 }
