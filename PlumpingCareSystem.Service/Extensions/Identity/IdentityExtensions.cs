@@ -64,6 +64,11 @@ namespace PlumpingCareSystem.Service.Extensions.Identity
 				});
 			});
 
+			services.Configure<SecurityStampValidatorOptions>(opt =>
+			{
+				opt.ValidationInterval = TimeSpan.FromMinutes(30);
+			});
+
 			return services;
 		}
 	}

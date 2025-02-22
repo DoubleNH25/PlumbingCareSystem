@@ -9,6 +9,7 @@ using PlumpingCareSystem.Entity.Identity.ViewModels;
 using PlumpingCareSystem.Service.Helpers.Identity.ModelStateHelper;
 using PlumpingCareSystem.Service.Messages.Identity;
 using PlumpingCareSystem.Service.ServiceHolding.Identity.Abstract;
+using System.Security.Claims;
 
 namespace PlumpingCareSystem.Controllers
 {
@@ -58,6 +59,25 @@ namespace PlumpingCareSystem.Controllers
 			{
 				ViewBag.Result = "NotSucceed";
 				ModelState.AddModelErrorList(userCreateResult.Errors);
+				return View();
+			}
+			var assignRoleResult = await _userManager.AddToRoleAsync(user, "Member");
+			if (!assignRoleResult.Succeeded)
+			{
+				await _userManager.DeleteAsync(user);
+				ViewBag.Result = "NotSucceed";
+				ModelState.AddModelErrorList(assignRoleResult.Errors);
+				return View();
+			}
+
+			var defaultClaim = new Claim("AdminObserverExpireDate", DateTime.Now.AddDays(-1).ToString());
+			var addClaimResult = await _userManager.AddClaimAsync(user, defaultClaim);
+			if (!addClaimResult.Succeeded)
+			{
+				await _userManager.RemoveFromRoleAsync(user, "Member");
+				await _userManager.DeleteAsync(user);
+				ViewBag.Result = "NotSucceed";
+				ModelState.AddModelErrorList(addClaimResult.Errors);
 				return View();
 			}
 			_toasty.AddSuccessToastMessage(NotificationMessagesIdentity.SignUp(user.UserName!), new ToastrOptions { Title = NotificationMessagesIdentity.SuccessedTitle });

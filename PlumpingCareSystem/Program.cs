@@ -1,6 +1,7 @@
 using NToastNotify;
 using PlumpingCareSystem.Repository.Extensions;
 using PlumpingCareSystem.Service.Extensions;
+using PlumpingCareSystem.Service.Middlewares.Identity;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -25,7 +26,7 @@ if (!app.Environment.IsDevelopment())
 	app.UseHsts();
 }
 
-
+app.UseStatusCodePagesWithReExecute("/Error/PageNotFound");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -34,6 +35,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<SecurityStampCheck>();
 
 #pragma warning disable ASP0014
 app.UseEndpoints(endpoint =>

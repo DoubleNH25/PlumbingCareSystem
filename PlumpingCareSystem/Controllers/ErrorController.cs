@@ -25,5 +25,9 @@ namespace PlumpingCareSystem.Controllers
 
 			return View(new ErrorVM("Server error. Please speak your admin.", 500));
 		}
+		public IActionResult PageNotFound()
+		{
+			return View();
+		}
 	}
 }

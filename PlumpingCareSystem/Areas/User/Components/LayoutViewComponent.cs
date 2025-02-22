@@ -15,14 +15,14 @@ namespace PlumpingCareSystem.Areas.User.Components
 		{
 			_userManager = userManager;
 		}
-		public async Task<IViewComponentResult> InvokeAsync(string Username)
+		public async Task<IViewComponentResult> InvokeAsync(string id)
 		{
 
-			if (Username == null)
+			if (id == null)
 			{
-				Username = User.Identity!.Name!;
+				id = UserClaimsPrincipal.Claims.FirstOrDefault(x => x.Type.Contains("identifier"))!.Value;
 			}
-			var user = await _userManager.FindByNameAsync(Username);
+			var user = await _userManager.FindByIdAsync(id);
 			if (user!.FileName == null)
 			{
 				return View(new UserPictureVM { FileName = "Default" });

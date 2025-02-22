@@ -9,6 +9,7 @@ namespace PlumpingCareSystem.Service.Automapper.Identity
 		public UserEditMapper()
 		{
 			CreateMap<AppUser, UserEditVM>().ReverseMap();
+			CreateMap<AppUser, UserVM>().ReverseMap();
 		}
 	}
 }
