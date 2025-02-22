@@ -11,6 +11,7 @@ namespace PlumpingCareSystem.Service.Automapper.WebApplication
 			CreateMap<HomePage, HomePageListVM>().ReverseMap();
 			CreateMap<HomePage, HomePageAddVM>().ReverseMap();
 			CreateMap<HomePage, HomePageUpdateVM>().ReverseMap();
+			CreateMap<HomePage, HomePageVMForUI>().ReverseMap();
 		}
 	}
 }
