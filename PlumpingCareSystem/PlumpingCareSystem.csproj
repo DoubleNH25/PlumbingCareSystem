@@ -24,7 +24,6 @@
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Views\Shared\Components\Testimonal\" />
     <Folder Include="Views\Shared\Components\Team\" />
-    <Folder Include="Views\Shared\Components\Service\" />
     <Folder Include="wwwroot\images\aboutUs\" />
     <Folder Include="wwwroot\images\testimonals\" />
     <Folder Include="wwwroot\images\team\" />
